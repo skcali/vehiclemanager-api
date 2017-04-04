@@ -48,3 +48,4 @@ C:\Users\SCali\dev\VehicleManager\VehicleManager.API\obj\Debug\VehicleManager.AP
 C:\Users\SCali\dev\VehicleManager\VehicleManager.API\obj\Debug\VehicleManager.API.pdb
 C:\Users\SCali\dev\VehicleManager\VehicleManager.API\obj\Debug\VehicleManager.API.Migrations.InitialMigration.resources
 C:\Users\SCali\dev\VehicleManager\VehicleManager.API\obj\Debug\VehicleManager.API.csproj.GenerateResource.Cache
+C:\Users\SCali\dev\VehicleManager\VehicleManager.API\bin\Faker.dll
