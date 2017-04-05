@@ -18,9 +18,19 @@ namespace VehicleManager.API.Controllers
         private VehicleManagerDataContext db = new VehicleManagerDataContext();
 
         // GET: api/Sales
-        public IQueryable<Sale> GetSales()
+        public IHttpActionResult GetSales()
         {
-            return db.Sales;
+            var resultSet = db.Sales.Select(sale => new
+            {
+                sale.SaleId,
+                sale.VehicleId,
+                sale.CustomerId,
+                sale.SalePrice,
+                sale.InvoiceDate,
+                sale.PaymentReceivedDate,
+                VehicleName = $"{sale.Vehicle.Year} {sale.Vehicle.Make} {sale.Vehicle.Model}"
+            });
+            return Ok(resultSet);
         }
 
         // GET: api/Sales/5
@@ -33,7 +43,15 @@ namespace VehicleManager.API.Controllers
                 return NotFound();
             }
 
-            return Ok(sale);
+            return Ok(new
+            {
+                sale.SaleId,
+                sale.VehicleId,
+                sale.CustomerId,
+                sale.SalePrice,
+                sale.InvoiceDate,
+                sale.PaymentReceivedDate,
+            });
         }
 
         // PUT: api/Sales/5
@@ -50,7 +68,16 @@ namespace VehicleManager.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(sale).State = EntityState.Modified;
+
+            var dbSale = db.Sales.Find(id);
+            dbSale.SaleId = sale.SaleId;
+            dbSale.VehicleId = sale.VehicleId;
+            dbSale.CustomerId = sale.CustomerId;
+            dbSale.SalePrice = sale.SalePrice;
+            dbSale.InvoiceDate = sale.InvoiceDate;
+            dbSale.PaymentReceivedDate = sale.PaymentReceivedDate;
+
+            db.Entry(dbSale).State = EntityState.Modified;
 
             try
             {
@@ -99,7 +126,15 @@ namespace VehicleManager.API.Controllers
             db.Sales.Remove(sale);
             db.SaveChanges();
 
-            return Ok(sale);
+            return Ok(new
+            {
+                sale.SaleId,
+                sale.VehicleId,
+                sale.CustomerId,
+                sale.SalePrice,
+                sale.InvoiceDate,
+                sale.PaymentReceivedDate,
+            });
         }
 
         protected override void Dispose(bool disposing)

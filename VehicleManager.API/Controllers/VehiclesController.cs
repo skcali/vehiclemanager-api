@@ -18,9 +18,19 @@ namespace VehicleManager.API.Controllers
         private VehicleManagerDataContext db = new VehicleManagerDataContext();
 
         // GET: api/Vehicles
-        public IQueryable<Vehicle> GetVehicles()
+        public IHttpActionResult GetVehicles()
         {
-            return db.Vehicles;
+            var resultSet = db.Vehicles.Select(vehicle => new
+            {
+                vehicle.VehicleId,
+                vehicle.Make,
+                vehicle.Model,
+                vehicle.Year,
+                vehicle.Color,
+                vehicle.VehicleType,
+                vehicle.RetailPrice 
+            });
+            return Ok(resultSet);
         }
 
         // GET: api/Vehicles/5
@@ -33,7 +43,16 @@ namespace VehicleManager.API.Controllers
                 return NotFound();
             }
 
-            return Ok(vehicle);
+            return Ok(new
+            {
+                vehicle.VehicleId,
+                vehicle.Make,
+                vehicle.Model,
+                vehicle.Year,
+                vehicle.Color,
+                vehicle.VehicleType,
+                vehicle.RetailPrice
+            });
         }
 
         // PUT: api/Vehicles/5
@@ -50,7 +69,16 @@ namespace VehicleManager.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(vehicle).State = EntityState.Modified;
+            var dbVehicle = db.Vehicles.Find(id);
+            dbVehicle.VehicleId = vehicle.VehicleId;
+            dbVehicle.Make = vehicle.Make;
+            dbVehicle.Model = vehicle.Model;
+            dbVehicle.Year = vehicle.Year;
+            dbVehicle.Color = vehicle.Color;
+            dbVehicle.VehicleType = vehicle.VehicleType;
+            dbVehicle.RetailPrice = vehicle.RetailPrice;
+
+            db.Entry(dbVehicle).State = EntityState.Modified;
 
             try
             {
@@ -99,7 +127,16 @@ namespace VehicleManager.API.Controllers
             db.Vehicles.Remove(vehicle);
             db.SaveChanges();
 
-            return Ok(vehicle);
+            return Ok(new
+            {
+                vehicle.VehicleId,
+                vehicle.Make,
+                vehicle.Model,
+                vehicle.Year,
+                vehicle.Color,
+                vehicle.VehicleType,
+                vehicle.RetailPrice
+            });
         }
 
         protected override void Dispose(bool disposing)
