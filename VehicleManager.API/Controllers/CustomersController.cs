@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using VehicleManager.API.Data;
 using VehicleManager.API.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace VehicleManager.API.Controllers
 {
@@ -27,8 +29,8 @@ namespace VehicleManager.API.Controllers
                 customer.Telephone,
                 customer.FirstName,
                 customer.LastName,
-                //OutstandingPayment = $"{customer.Sales}"
-
+                OutstandingSalesCount = customer.Sales.Count(s => !s.PaymentReceivedDate.HasValue),
+                ReceivedSalesCount = customer.Sales.Count(s => s.PaymentReceivedDate.HasValue)
             });
             return Ok(resultSet);
         }

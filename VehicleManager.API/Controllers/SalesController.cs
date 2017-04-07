@@ -28,7 +28,8 @@ namespace VehicleManager.API.Controllers
                 sale.SalePrice,
                 sale.InvoiceDate,
                 sale.PaymentReceivedDate,
-                VehicleName = $"{sale.Vehicle.Year} {sale.Vehicle.Make} {sale.Vehicle.Model}"
+                CustomerName = sale.Customer.FirstName + " " + sale.Customer.LastName,
+                VehicleName = sale.Vehicle.Year + " " + sale.Vehicle.Make + " " + sale.Vehicle.Model
             });
             return Ok(resultSet);
         }
